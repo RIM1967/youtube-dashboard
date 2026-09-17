@@ -109,8 +109,8 @@ else:
 # ------------------------------------------------------------------
 # ZONE DÉTAIL — un onglet par visualisation, réactifs aux filtres
 # ------------------------------------------------------------------
-tab1, tab2, tab3 = st.tabs([
-    "📈 Vues vs engagement", "🏷️ Par catégorie", "🔥 Profil des vidéos virales",
+tab1, tab2, tab3, tab4 = st.tabs([
+    "📈 Vues vs engagement", "🏷️ Par catégorie", "🔥 Profil des vidéos virales", "📋 Vidéos",
 ])
 
 PLOT_LAYOUT = dict(paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF", font_color="#111111")
@@ -279,6 +279,34 @@ with tab3:
         )
     else:
         st.info("Pas assez de données dans cette sélection pour ce comparatif.")
+
+with tab4:
+    st.subheader("Liste des vidéos (sélection filtrée)")
+    st.caption("Cliquez sur un titre pour ouvrir la vidéo sur YouTube.")
+
+    tableau = df_filtre[
+        ["title", "channel_title", "category", "views", "likes", "like_rate", "video_id"]
+    ].sort_values("views", ascending=False).copy()
+
+    # L'URL n'est pas dans le dataset : on la reconstruit à partir du video_id,
+    # un identifiant YouTube standard (youtube.com/watch?v=ID).
+    tableau["url"] = "https://www.youtube.com/watch?v=" + tableau["video_id"]
+    tableau["like_rate_pct"] = tableau["like_rate"] * 100
+
+    st.dataframe(
+        tableau[["title", "url", "channel_title", "category", "views", "likes", "like_rate_pct"]],
+        column_config={
+            "title": st.column_config.TextColumn("Titre"),
+            "url": st.column_config.LinkColumn("Lien", display_text="Voir sur YouTube"),
+            "channel_title": st.column_config.TextColumn("Chaîne"),
+            "category": st.column_config.TextColumn("Catégorie"),
+            "views": st.column_config.NumberColumn("Vues", format="%d"),
+            "likes": st.column_config.NumberColumn("Likes", format="%d"),
+            "like_rate_pct": st.column_config.NumberColumn("Taux de like", format="%.2f %%"),
+        },
+        hide_index=True,
+        use_container_width=True,
+    )
 
 st.caption(
     f"{len(df_filtre):,} vidéos affichées sur {len(df):,} au total ({len(viral):,} virales dans la sélection)."
