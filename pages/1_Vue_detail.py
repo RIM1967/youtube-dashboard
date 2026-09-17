@@ -149,15 +149,17 @@ with tab2:
         orientation="h",
         labels={"value": "Vues médianes", "category": "Catégorie"},
         text=vues_par_categorie.apply(lambda v: f"{v:,.0f}"),
+        color=vues_par_categorie.values,
+        color_continuous_scale="Blues",
     )
     fig2.update_traces(
-        marker_color=BLEU,
         texttemplate="<b>%{text}</b>",
         textposition="outside",
         textfont=dict(color="#111111", size=12),
         cliponaxis=False,
+        marker_line_width=0,
     )
-    fig2.update_layout(**PLOT_LAYOUT, showlegend=False, margin=dict(r=70))
+    fig2.update_layout(**PLOT_LAYOUT, showlegend=False, coloraxis_showscale=False, margin=dict(r=70))
     fig2.update_xaxes(gridcolor=GRID_COLOR)
     fig2.update_yaxes(gridcolor="#FFFFFF")
     st.plotly_chart(fig2, use_container_width=True)
@@ -172,15 +174,17 @@ with tab2:
         orientation="h",
         labels={"value": "Taux de like médian", "category": "Catégorie"},
         text=like_rate_par_categorie.apply(lambda v: f"{v:.2%}"),
+        color=like_rate_par_categorie.values,
+        color_continuous_scale="Reds",
     )
     fig2b.update_traces(
-        marker_color=ROUGE,
         texttemplate="<b>%{text}</b>",
         textposition="outside",
         textfont=dict(color="#111111", size=12),
         cliponaxis=False,
+        marker_line_width=0,
     )
-    fig2b.update_layout(**PLOT_LAYOUT, showlegend=False, margin=dict(r=70))
+    fig2b.update_layout(**PLOT_LAYOUT, showlegend=False, coloraxis_showscale=False, margin=dict(r=70))
     fig2b.update_xaxes(gridcolor=GRID_COLOR)
     fig2b.update_yaxes(gridcolor="#FFFFFF")
     st.plotly_chart(fig2b, use_container_width=True)
