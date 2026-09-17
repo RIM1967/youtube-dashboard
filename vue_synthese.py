@@ -104,7 +104,7 @@ with col1:
     like_reste = reste["like_rate"].median()
     max_like = max(like_viral, like_reste)
     barres = (
-        barre_html("Top 1 % (virales)", f"{like_viral:.2%}", like_viral / max_like * 100)
+        barre_html("Top 1 % (virales)", f"{like_viral:.2%}", like_viral / max_like * 100, couleur="#E63946")
         + barre_html("Reste", f"{like_reste:.2%}", like_reste / max_like * 100, couleur="#B5B5B5")
     )
     note = f"{(like_viral - like_reste):+.2%} vs reste"
@@ -129,7 +129,7 @@ with col3:
     categorie_dominante = part_dominante.idxmax()
     part = part_dominante.max()
     part_dans_dataset = (df["category"] == categorie_dominante).mean()
-    barres = barre_html(f"{categorie_dominante} dans le Top 1 %", f"{part:.0%}", part * 100, couleur="#E00000")
+    barres = barre_html(f"{categorie_dominante} dans le Top 1 %", f"{part:.0%}", part * 100, couleur="#1f77b4")
     note = f"{(part - part_dans_dataset):+.0%} vs sa part globale dans le dataset"
     st.markdown(carte_html("03", f"Catégorie dominante : {categorie_dominante}", barres, note), unsafe_allow_html=True)
 
